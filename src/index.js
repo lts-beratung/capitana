@@ -28,7 +28,12 @@ module.exports = async (input, options = {}, config) => {
 			const {stdout, stderr} = await processStage(stageScript, cwd);
 			if (stderr) {
 				spinner.fail();
-				console.error(stderr);
+				if (options.verbose === true) {
+					console.log(stderr);
+				}
+				if (options.break === true) {
+					break;
+				}
 			} else {
 				spinner.succeed();
 				if (options.verbose === true) {
@@ -37,7 +42,12 @@ module.exports = async (input, options = {}, config) => {
 			}
 		} catch (error) {
 			spinner.fail();
-			console.error(error);
+			if (options.verbose === true) {
+				console.log(error);
+			}
+			if (options.break === true) {
+				break;
+			}
 		}
 	}
 };
@@ -57,4 +67,3 @@ function getArrayDifference(minuend, substrahend) {
 function processStage(stageScript, cwd) {
 	return execa('/bin/sh', ['-c', stageScript], {cwd});
 }
-
