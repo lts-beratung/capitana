@@ -9,16 +9,12 @@
 		"email": "valcazar96@gmail.com",
 		"url": "lts-beratung.de/en.html"
 	},
-	"bin": "cli.js",
+	"bin": "src/cli.js",
 	"engines": {
 		"node": ">=6"
 	},
-	"scripts": {
-		"test": "xo && ava"
-	},
 	"files": [
-		"index.js",
-		"cli.js"
+		"src"
 	],
 	"keywords": [
 		"cli-app",
@@ -26,10 +22,15 @@
 		""
 	],
 	"dependencies": {
-		"meow": "^5.0.0"
+		"chalk": "^2.4.2",
+		"conf": "^2.1.0",
+		"execa": "^1.0.0",
+		"inquirer": "^6.2.1",
+		"meow": "^5.0.0",
+		"ora": "^3.4.0",
+		"shelljs": "^0.8.3"
 	},
 	"devDependencies": {
-		"ava": "^0.25.0",
 		"xo": "^0.21.0"
 	}
 }
