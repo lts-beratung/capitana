@@ -10,34 +10,32 @@ module.exports = async (input, options = {}, config) => {
 	let microservices;
 
 	microservices = input;
-	if (options["except"] === true) {
+	if (options.except === true) {
 		microservices = getArrayDifference(configMicroservices, microservices);
-	} else if (options["all"] === true) {
+	} else if (options.all === true) {
 		microservices = configMicroservices;
 	}
 
-	let originalStageScript = config.stages[stage].run;
+	const originalStageScript = config.stages[stage].run;
 	for (const microservice of microservices) {
 		const spinner = ora(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}...`).start();
 
 		const stageScript = interpolateVariables(originalStageScript, microservice, options);
-		let cwd = config.stages[stage].cwd;
+		let {cwd} = config.stages[stage];
 		cwd = interpolateVariables(cwd, microservice, options);
 		try {
-			const { stdout, stderr } = await processStage(stageScript, cwd);
+			/* eslint-disable no-await-in-loop */
+			const {stdout, stderr} = await processStage(stageScript, cwd);
 			if (stderr) {
 				spinner.fail();
 				console.error(stderr);
-			}
-			else {
+			} else {
 				spinner.succeed();
-				if (options["verbose"] === true) {
+				if (options.verbose === true) {
 					console.log(stdout);
 				}
-
 			}
-		}
-		catch (error) {
+		} catch (error) {
 			spinner.fail();
 			console.error(error);
 		}
@@ -45,9 +43,9 @@ module.exports = async (input, options = {}, config) => {
 };
 
 function interpolateVariables(string, microservice, options) {
-	string = string.replace("$MICROSERVICE", microservice);
+	string = string.replace('$MICROSERVICE', microservice);
 	for (const key of Object.keys(options)) {
-		string = string.replace("$" + key, options[key]);
+		string = string.replace('$' + key, options[key]);
 	}
 	return string;
 }
@@ -57,6 +55,6 @@ function getArrayDifference(minuend, substrahend) {
 }
 
 function processStage(stageScript, cwd) {
-	return execa("/bin/sh", ["-c", stageScript], { cwd: cwd });
+	return execa('/bin/sh', ['-c', stageScript], {cwd});
 }
 
