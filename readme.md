@@ -1,4 +1,4 @@
-# capitana [![install size](https://flat.badgen.net/packagephobia/install/gineta)](https://packagephobia.now.sh/result?p=gineta) [![XO code style](https://flat.badgen.net/xo/status/standup-boy)](https://github.com/xojs/xo)
+# capitana [![install size](https://flat.badgen.net/packagephobia/install/capitana)](https://packagephobia.now.sh/result?p=capitana) [![XO code style](https://flat.badgen.net/xo/status/capitana)](https://github.com/xojs/xo)
 
 > A minimal, highly customisable microservice deploy helper.
 
