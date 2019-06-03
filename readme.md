@@ -1,4 +1,4 @@
-# capitana [![Build Status](https://travis-ci.org/lts-beratung/capitana.svg?branch=master)](https://travis-ci.org/lts-beratung/capitana)
+# capitana [![install size](https://flat.badgen.net/packagephobia/install/gineta)](https://packagephobia.now.sh/result?p=gineta) [![XO code style](https://flat.badgen.net/xo/status/standup-boy)](https://github.com/xojs/xo)
 
 > A minimal, highly customisable microservice deploy helper.
 
