@@ -4,11 +4,11 @@ const fs = require('fs');
 const meow = require('meow');
 const yaml = require('js-yaml');
 const updateNotifier = require('update-notifier');
-const interactive = require('./interactive.js');
 const pkg = require('../package.json');
+const interactive = require('./interactive.js');
 const capitana = require('.');
 
-const notifier = updateNotifier({ pkg });
+const notifier = updateNotifier({pkg});
 
 const cli = meow(`
 	Usage
@@ -34,25 +34,26 @@ try {
 }
 
 (async () => {
-	let input = cli.input;
+	let {input} = cli;
 	let options = cli.flags;
 	let stages = [];
 
 	if (cli.flags.interactive) {
-		let res = await interactive(config);
-		stages = res.stages;
-		input = res.input;
-		options = { ...options, ...res.options };
-	}
-	else {
+		const res = await interactive(config);
+		({
+			stages,
+			input
+		} = res);
+		options = {...options, ...res.options};
+	} else {
 		stages = [input.shift()];
 	}
 
 	for (const stage of stages) {
 		try {
+			/* eslint-disable no-await-in-loop */
 			await capitana(stage, input, options, config);
-		}
-		catch (e) {
+		} catch (e) {
 			console.error(e);
 			break;
 		}
