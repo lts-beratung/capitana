@@ -25,9 +25,8 @@ module.exports = async (input, options = {}, config) => {
 		microservices = configMicroservices;
 	}
 
-	const variables = config.stages[stage].variables;
-	if(variables && !isSubset(variables, Object.keys(options)))
-	{
+	const {variables} = config.stages[stage];
+	if (variables && !isSubset(variables, Object.keys(options))) {
 		console.error(chalk`{red.bold Error}: Not enough variables provided for stage "${stage}". Needed:
   "${variables}".`);
 		return;
@@ -43,11 +42,11 @@ module.exports = async (input, options = {}, config) => {
 		}
 
 		const stageScript = interpolateVariables(originalStageScript, microservice, options);
-		let { cwd } = config.stages[stage];
+		let {cwd} = config.stages[stage];
 		cwd = interpolateVariables(cwd, microservice, options);
 		try {
 			/* eslint-disable no-await-in-loop */
-			const { stdout, stderr } = await processStage(stageScript, cwd);
+			const {stdout, stderr} = await processStage(stageScript, cwd);
 			if (stderr) {
 				spinner.fail();
 				if (options.verbose === true) {
@@ -76,7 +75,7 @@ module.exports = async (input, options = {}, config) => {
 
 function isStageAllowed(config, microservice, stage) {
 	const microserviceObject = config.microservices[microservice];
-	return !(microserviceObject && microserviceObject.allowedStages && !microserviceObject.allowedStages.includes(stage))
+	return !(microserviceObject && microserviceObject.allowedStages && !microserviceObject.allowedStages.includes(stage));
 }
 
 function areMicroservicesValid(microservices, configMicroservices) {
@@ -91,7 +90,7 @@ function areMicroservicesValid(microservices, configMicroservices) {
 function areVariablesValid(config, options) {
 	const confVariables = Object.keys(config.variables);
 	const currentVariables = Object.keys(options);
-	const allVariables = confVariables.concat(["except", "all", "verbose", "break"]);
+	const allVariables = confVariables.concat(['except', 'all', 'verbose', 'break']);
 	if (!isSubset(currentVariables, allVariables)) {
 		console.error(chalk`{red.bold Error}: Variables "${currentVariables}" don't match with the ones specified in the config file:
   "${allVariables}".`);
@@ -99,14 +98,12 @@ function areVariablesValid(config, options) {
 	}
 	for (const vari of currentVariables) {
 		const allowedValues = config.variables[vari];
-		if(allowedValues && !allowedValues.includes(`${options[vari]}`))
-		{
+		if (allowedValues && !allowedValues.includes(`${options[vari]}`)) {
 			console.error(chalk`{red.bold Error}: Value "${options[vari]}" of variable "${vari}" not allowed. Allowed:
   "${allowedValues}".`);
 			return false;
 		}
 	}
-
 
 	return true;
 }
@@ -128,5 +125,5 @@ function getArrayDifference(minuend, substrahend) {
 }
 
 function processStage(stageScript, cwd) {
-	return execa('/bin/sh', ['-c', stageScript], { cwd });
+	return execa('/bin/sh', ['-c', stageScript], {cwd});
 }
