@@ -7,7 +7,7 @@
 	"author": {
 		"name": "Victor Enrique Alcazar Lopez",
 		"email": "valcazar96@gmail.com",
-		"url": "lts-beratung.de/en.html"
+		"url": "https://www.lts-beratung.de/en.html"
 	},
 	"bin": "src/cli.js",
 	"engines": {
@@ -29,6 +29,7 @@
 		"js-yaml": "^3.13.1",
 		"meow": "^5.0.0",
 		"ora": "^3.4.0",
+		"prompts": "^2.1.0",
 		"shelljs": "^0.8.3",
 		"update-notifier": "^3.0.0"
 	},

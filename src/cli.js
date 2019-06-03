@@ -4,10 +4,11 @@ const fs = require('fs');
 const meow = require('meow');
 const yaml = require('js-yaml');
 const updateNotifier = require('update-notifier');
+const interactive = require('./interactive.js');
 const pkg = require('../package.json');
 const capitana = require('.');
 
-const notifier = updateNotifier({pkg});
+const notifier = updateNotifier({ pkg });
 
 const cli = meow(`
 	Usage
@@ -32,6 +33,30 @@ try {
 	process.exit(1);
 }
 
-capitana(cli.input, cli.flags, config);
+(async () => {
+	let input = cli.input;
+	let options = cli.flags;
+	let stages = [];
 
-notifier.notify();
+	if (cli.flags.interactive) {
+		let res = await interactive(config);
+		stages = res.stages;
+		input = res.input;
+		options = { ...options, ...res.options };
+	}
+	else {
+		stages = [input.shift()];
+	}
+
+	for (const stage of stages) {
+		try {
+			await capitana(stage, input, options, config);
+		}
+		catch (e) {
+			console.error(e);
+			break;
+		}
+	}
+
+	notifier.notify();
+})();

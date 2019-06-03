@@ -3,21 +3,15 @@ const execa = require('execa');
 const ora = require('ora');
 const chalk = require('chalk');
 
-module.exports = async (input, options = {}, config) => {
-	const stage = input.shift();
-
+module.exports = async (stage, input, options = {}, config) => {
 	const configMicroservices = Object.keys(config.microservices);
 	let microservices;
 
 	microservices = input;
 
-	if (!areMicroservicesValid(microservices, configMicroservices)) {
-		return;
-	}
-
-	if (!areVariablesValid(config, options)) {
-		return;
-	}
+	assertStageIsValid(config, stage);
+	assertMicroservicesAreValid(microservices, configMicroservices);
+	assertVariablesAreValid(config, options);
 
 	if (options.except === true) {
 		microservices = getArrayDifference(configMicroservices, microservices);
@@ -25,13 +19,13 @@ module.exports = async (input, options = {}, config) => {
 		microservices = configMicroservices;
 	}
 
-	const {variables} = config.stages[stage];
+	const { variables } = config.stages[stage];
 	if (variables && !isSubset(variables, Object.keys(options))) {
-		console.error(chalk`{red.bold Error}: Not enough variables provided for stage "${stage}". Needed:
+		throw new Error(`Not enough variables provided for stage "${stage}". Needed:
   "${variables}".`);
-		return;
 	}
 
+	console.log(chalk`Beginning to work on stage {green.bold ${stage}}`);
 	const originalStageScript = config.stages[stage].run;
 	for (const microservice of microservices) {
 		const spinner = ora(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}...`).start();
@@ -42,11 +36,11 @@ module.exports = async (input, options = {}, config) => {
 		}
 
 		const stageScript = interpolateVariables(originalStageScript, microservice, options);
-		let {cwd} = config.stages[stage];
+		let { cwd } = config.stages[stage];
 		cwd = interpolateVariables(cwd, microservice, options);
 		try {
 			/* eslint-disable no-await-in-loop */
-			const {stdout, stderr} = await processStage(stageScript, cwd);
+			const { stdout, stderr } = await processStage(stageScript, cwd);
 			if (stderr) {
 				spinner.fail();
 				if (options.verbose === true) {
@@ -71,41 +65,44 @@ module.exports = async (input, options = {}, config) => {
 			}
 		}
 	}
+	console.log("");
 };
+
+function assertStageIsValid(config, stage) {
+	const stages = Object.keys(config.stages);
+	if (!stages.includes(stage)) {
+		throw new Error(`Stage "${stage}" not included in the ones specified in the config file:
+  "${Object.keys(config.stages)}".`);
+	}
+}
 
 function isStageAllowed(config, microservice, stage) {
 	const microserviceObject = config.microservices[microservice];
 	return !(microserviceObject && microserviceObject.allowedStages && !microserviceObject.allowedStages.includes(stage));
 }
 
-function areMicroservicesValid(microservices, configMicroservices) {
+function assertMicroservicesAreValid(microservices, configMicroservices) {
 	if (!isSubset(microservices, configMicroservices)) {
-		console.error(chalk`{red.bold Error}: Microservices "${microservices}" don't match with the ones specified in the config file:
+		throw new Error(`Microservices "${microservices}" don't match with the ones specified in the config file:
   "${configMicroservices}".`);
-		return false;
 	}
-	return true;
 }
 
-function areVariablesValid(config, options) {
+function assertVariablesAreValid(config, options) {
 	const confVariables = Object.keys(config.variables);
 	const currentVariables = Object.keys(options);
-	const allVariables = confVariables.concat(['except', 'all', 'verbose', 'break']);
+	const allVariables = confVariables.concat(['except', 'all', 'verbose', 'break', 'interactive']);
 	if (!isSubset(currentVariables, allVariables)) {
-		console.error(chalk`{red.bold Error}: Variables "${currentVariables}" don't match with the ones specified in the config file:
+		throw new Error(`Variables "${currentVariables}" don't match with the ones specified in the config file:
   "${allVariables}".`);
-		return false;
 	}
 	for (const vari of currentVariables) {
 		const allowedValues = config.variables[vari];
 		if (allowedValues && !allowedValues.includes(`${options[vari]}`)) {
-			console.error(chalk`{red.bold Error}: Value "${options[vari]}" of variable "${vari}" not allowed. Allowed:
+			throw new Error(`Value "${options[vari]}" of variable "${vari}" not allowed. Allowed:
   "${allowedValues}".`);
-			return false;
 		}
 	}
-
-	return true;
 }
 
 function interpolateVariables(string, microservice, options) {
@@ -125,5 +122,5 @@ function getArrayDifference(minuend, substrahend) {
 }
 
 function processStage(stageScript, cwd) {
-	return execa('/bin/sh', ['-c', stageScript], {cwd});
+	return execa('/bin/sh', ['-c', stageScript], { cwd });
 }
