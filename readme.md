@@ -3,45 +3,6 @@
 > A minimal, highly customisable microservice deploy helper.
 
 
-## Install
-
-```
-$ npm install capitana
-```
-
-
-## Usage
-
-```js
-const capitana = require('capitana');
-
-capitana('unicorns');
-//=> 'unicorns & rainbows'
-```
-
-
-## API
-
-### capitana(input, [options])
-
-#### input
-
-Type: `string`
-
-Lorem ipsum.
-
-#### options
-
-Type: `Object`
-
-##### foo
-
-Type: `boolean`<br>
-Default: `false`
-
-Lorem ipsum.
-
-
 ## CLI
 
 ```
@@ -52,19 +13,18 @@ $ npm install --global capitana
 $ capitana --help
 
   Usage
-    capitana [input]
+    capitana [stage] [microservices] [options]
 
   Options
-    --foo  Lorem ipsum [Default: false]
+    --break Stop execution on execution failure.
+    --all  Execute program on all microservices.
+    --except  Exclude [microservices] microservices from execution.
 
   Examples
-    $ capitana
-    unicorns & rainbows
-    $ capitana ponies
-    ponies & rainbows
+    $ capitana deploy --all
+      executes stage 'deploy' on all microservices
 ```
-
 
 ## License
 
-MIT © [Victor Enrique Alcazar Lopez](https://lts-beratung.de/en.html)
+MIT © [LTS Beratung](https://lts-beratung.de/en.html)

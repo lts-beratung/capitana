@@ -12,16 +12,16 @@ const notifier = updateNotifier({ pkg });
 
 const cli = meow(`
 	Usage
-	  $ capitana [input]
+		capitana [stage] [microservices] [options]
 
 	Options
-	  --foo  Lorem ipsum [Default: false]
+		--break Stop execution on execution failure.
+		--all  Execute program on all microservices.
+		--except  Exclude [microservices] microservices from execution.
 
 	Examples
-	  $ capitana
-	  unicorns & rainbows
-	  $ capitana ponies
-	  ponies & rainbows
+		$ capitana deploy --all
+			executes stage 'deploy' on all microservices
 `);
 
 let config;
