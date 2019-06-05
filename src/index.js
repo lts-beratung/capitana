@@ -19,7 +19,7 @@ module.exports = async (stage, input, options = {}, config) => {
 		microservices = configMicroservices;
 	}
 
-	const {variables} = config.stages[stage];
+	const { variables } = config.stages[stage];
 	if (variables && !isSubset(variables, Object.keys(options))) {
 		throw new Error(`Not enough variables provided for stage "${stage}". Needed:
   "${variables}".`);
@@ -36,11 +36,14 @@ module.exports = async (stage, input, options = {}, config) => {
 		}
 
 		const stageScript = interpolateVariables(originalStageScript, microservice, options);
-		let {cwd} = config.stages[stage];
-		cwd = interpolateVariables(cwd, microservice, options);
+		let { cwd } = config.stages[stage];
+		if (cwd) {
+			cwd = interpolateVariables(cwd, microservice, options);
+		}
+		
 		try {
 			/* eslint-disable no-await-in-loop */
-			const {stdout, stderr} = await processStage(stageScript, cwd);
+			const { stdout, stderr } = await processStage(stageScript, cwd);
 			if (stderr) {
 				spinner.fail();
 				if (options.verbose === true) {
@@ -122,5 +125,5 @@ function getArrayDifference(minuend, substrahend) {
 }
 
 function processStage(stageScript, cwd) {
-	return execa('/bin/sh', ['-c', stageScript], {cwd});
+	return execa('/bin/sh', ['-c', stageScript], { cwd });
 }

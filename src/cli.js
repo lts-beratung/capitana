@@ -20,8 +20,8 @@ const cli = meow(`
 		--except  Exclude [microservices] microservices from execution.
 
 	Examples
-		$ capitana deploy --all
-			executes stage 'deploy' on all microservices
+	$ capitana deploy --all
+		executes stage 'deploy' on all microservices
 `);
 
 let config;
