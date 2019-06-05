@@ -22,7 +22,7 @@ and start `capitana build --environment prod --all`!
 $ npm install --global capitana
 ```
 
-## Usage
+## Usage
 
 ```
 $ capitana --help
