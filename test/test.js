@@ -16,8 +16,7 @@ test('stderr logging after stdout', async t => {
 });
 
 async function genericTest(path, args, t, write) {
-	const {stdout, stderr} = await execa('capitana', args, {cwd: path});
-	console.log(stdout);
+	const {stdout, stderr} = await execa('npx', ['--quiet', 'capitana'].concat(args), {cwd: path});
 	if (write === true) {
 		await writeJsonFile(path + '/result.json', {stdout, stderr});
 	}
