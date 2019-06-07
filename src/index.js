@@ -48,21 +48,18 @@ module.exports = async (stage, input, options = {}, config) => {
 		try {
 			/* eslint-disable-next-line no-await-in-loop */
 			const {stdout, stderr} = await processStage(stageScript, cwd);
-			if (stderr) {
-				if (options.warnings === false) {
-					spinner.fail();
-				} else {
-					spinner.warn();
-				}
+			setSpinnerStatus(stderr, options, spinner);
 
+			if (stdout) {
+				if (options.verbose === true) {
+					console.log(stdout);
+				}
+			}
+
+			if (stderr) {
 				console.error(stderr);
 				if (options.warnings === false && options.break === true) {
 					break;
-				}
-			} else {
-				spinner.succeed();
-				if (options.verbose === true) {
-					console.log(stdout);
 				}
 			}
 		} catch (error) {
@@ -77,6 +74,18 @@ module.exports = async (stage, input, options = {}, config) => {
 
 	console.log('');
 };
+
+function setSpinnerStatus(stderr, options, spinner) {
+	if (stderr) {
+		if (options.warnings === false) {
+			spinner.fail();
+		} else {
+			spinner.warn();
+		}
+	} else {
+		spinner.succeed();
+	}
+}
 
 function assertStageIsValid(config, stage) {
 	const stages = Object.keys(config.stages);

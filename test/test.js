@@ -1,7 +1,7 @@
 import test from 'ava';
 import execa from 'execa';
 import loadJsonFile from 'load-json-file';
-// Import writeJsonFile from 'write-json-file';
+import writeJsonFile from 'write-json-file';
 
 test('no warnings flag', async t => {
 	await genericTest(
@@ -9,10 +9,19 @@ test('no warnings flag', async t => {
 		['push', '--all', '--no-warnings', '--break'], t);
 });
 
-async function genericTest(path, args, t) {
+test('stderr logging after stdout', async t => {
+	await genericTest(
+		'test/stderr-logging-after-stdout',
+		['push', '--all'], t);
+});
+
+async function genericTest(path, args, t, write) {
 	const {stdout, stderr} = await execa('capitana', args, {cwd: path});
 	console.log(stdout);
-	// Await writeJsonFile(path + '/result.json', { stdout, stderr });
+	if (write === true) {
+		await writeJsonFile(path + '/result.json', {stdout, stderr});
+	}
+
 	const result = await loadJsonFile(path + '/result.json');
 	t.is(stdout, result.stdout);
 	t.is(stderr, result.stderr);

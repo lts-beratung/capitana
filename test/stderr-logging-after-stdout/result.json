@@ -1,0 +1,4 @@
+{
+	"stdout": "Beginning to work on stage push\n",
+	"stderr": "- Working on stage push on microservice server...\n⚠ Working on stage push on microservice server...\nFound an error while executing the script\n- Working on stage push on microservice transceiver...\n⚠ Working on stage push on microservice transceiver...\nFound an error while executing the script\n- Working on stage push on microservice gateway...\n⚠ Working on stage push on microservice gateway...\nFound an error while executing the script\n- Working on stage push on microservice database...\n⚠ Working on stage push on microservice database...\nFound an error while executing the script"
+}

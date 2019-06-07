@@ -36,6 +36,7 @@
 	"devDependencies": {
 		"ava": "^2.0.0",
 		"load-json-file": "^6.0.0",
+		"write-json-file": "^4.1.0",
 		"xo": "^0.24.0"
 	}
 }

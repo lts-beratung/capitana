@@ -1,0 +1,19 @@
+variables:
+  environment:
+    - "dev"
+    - "int"
+    - "prod"
+microservices:
+  server: ~
+  transceiver: ~
+  gateway: ~
+  database: ~
+stages:
+  build:
+    run: "sleep 1"
+  push:
+    run: "sleep 1 && echo 'Found an error while executing the script' 1>&2 && echo 'Some stdout...'"
+  deploy:
+    variables:
+      - environment
+    run: "sleep 1"
