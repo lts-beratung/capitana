@@ -32,8 +32,7 @@ module.exports = async (stage, input, options = {}, config) => {
 	console.log(chalk`Beginning to work on stage {green.bold ${stage}}`);
 	const originalStageScript = config.stages[stage].run;
 	for (const microservice of microservices) {
-		const spinner = ora(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}...`).start();
-
+		let spinner = ora(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}...`).start();
 		if (!isStageAllowed(config, microservice, stage)) {
 			spinner.warn(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}... {yellow.bold Skipped}: Stage not allowed`);
 			continue;
@@ -48,7 +47,13 @@ module.exports = async (stage, input, options = {}, config) => {
 		try {
 			/* eslint-disable-next-line no-await-in-loop */
 			const {stdout, stderr} = await processStage(stageScript, cwd);
-			setSpinnerStatus(stderr, options, spinner);
+			if (stderr) {
+				if (options.warnings === false) {
+					throw new Error(stderr);
+				}
+			}
+
+			spinner = setSpinnerStatus(stderr, options, spinner);
 
 			if (stdout) {
 				if (options.verbose === true) {
@@ -58,16 +63,12 @@ module.exports = async (stage, input, options = {}, config) => {
 
 			if (stderr) {
 				console.error(stderr);
-				if (options.warnings === false && options.break === true) {
-					break;
-				}
 			}
 		} catch (error) {
 			spinner.fail();
-
 			console.error(error);
 			if (options.break === true) {
-				break;
+				throw new Error('Aborting execution: --break set to true');
 			}
 		}
 	}
@@ -78,13 +79,13 @@ module.exports = async (stage, input, options = {}, config) => {
 function setSpinnerStatus(stderr, options, spinner) {
 	if (stderr) {
 		if (options.warnings === false) {
-			spinner.fail();
-		} else {
-			spinner.warn();
+			return spinner.fail();
 		}
-	} else {
-		spinner.succeed();
+
+		return spinner.warn();
 	}
+
+	return spinner.succeed();
 }
 
 function assertStageIsValid(config, stage) {

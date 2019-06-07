@@ -55,7 +55,7 @@ try {
 			await capitana(stage, input, options, config);
 		} catch (error) {
 			console.error(error);
-			break;
+			process.exit(1);
 		}
 	}
 
