@@ -6,20 +6,28 @@ Microservice architecture has its perks, and orchestration systems sure do help 
 
 With `capitana`, you'll be able to control all the things your orchestration system can't quite reach.
 
-Forget about 
+Forget about
 
 ```
 ./build-database-prod.sh
 ./build-api-prod.sh
 ./build-database-prod.sh
-``` 
+```
 
 and start `capitana build --environment prod --all`!
 
-## CLI
+## Installation
+
+### Using [npm](https://github.com/npm/cli)
 
 ```
 $ npm install --global capitana
+```
+
+### Using [npx](https://github.com/zkat/npx)
+
+```
+$ npx capitana [stage] [microservices] [options]
 ```
 
 ## Usage
@@ -47,32 +55,32 @@ Capitana is heavily dependant on its own `.capitanarc` configuration file. For t
 Example configuration file:
 
 ```
-microservices: 
+microservices:
   database: ~
-  load-balancer: 
-    allowedStages: 
+  load-balancer:
+    allowedStages:
       - tag
       - deploy
   server: ~
-stages: 
-  build: 
+stages:
+  build:
     run: npm run build
     cwd: $MICROSERVICE
-  deploy: 
+  deploy:
     run: kubernetes apply -f deployment-$environment-$tag.yaml
-    variables: 
+    variables:
       - environment
       - tag
     cwd: $MICROSERVICE
-  push: 
+  push:
     run: docker-compose push
     cwd: $MICROSERVICE
-variables: 
-  environment: 
+variables:
+  environment:
     - dev
     - test
     - prod
-  tag: 
+  tag:
     - latest
     - "1.0"
 ```
