@@ -55,7 +55,7 @@ module.exports = async (stage, input, options = {}, config) => {
 					spinner.warn();
 				}
 
-				console.log(stderr);
+				console.error(stderr);
 				if (options.warnings === false && options.break === true) {
 					break;
 				}
@@ -67,7 +67,8 @@ module.exports = async (stage, input, options = {}, config) => {
 			}
 		} catch (error) {
 			spinner.fail();
-			console.log(error);
+
+			console.error(error);
 			if (options.break === true) {
 				break;
 			}
