@@ -4,7 +4,8 @@ const ora = require('ora');
 const chalk = require('chalk');
 
 const allowedGlobalVariables = [
-	'except', 'all', 'verbose', 'break', 'interactive', 'warnings'];
+	'except', 'all', 'verbose', 'break', 'interactive', 'warnings'
+];
 
 module.exports = async (stage, input, options = {}, config) => {
 	const configMicroservices = Object.keys(config.microservices);
@@ -22,7 +23,7 @@ module.exports = async (stage, input, options = {}, config) => {
 		microservices = configMicroservices;
 	}
 
-	const { variables } = config.stages[stage];
+	const {variables} = config.stages[stage];
 	if (variables && !isSubset(variables, Object.keys(options))) {
 		throw new Error(`Not enough variables provided for stage "${stage}". Needed:
   "${variables}".`);
@@ -39,19 +40,18 @@ module.exports = async (stage, input, options = {}, config) => {
 		}
 
 		const stageScript = interpolateVariables(originalStageScript, microservice, options);
-		let { cwd } = config.stages[stage];
+		let {cwd} = config.stages[stage];
 		if (cwd) {
 			cwd = interpolateVariables(cwd, microservice, options);
 		}
 
 		try {
 			/* eslint-disable no-await-in-loop */
-			const { stdout, stderr } = await processStage(stageScript, cwd);
+			const {stdout, stderr} = await processStage(stageScript, cwd);
 			if (stderr) {
 				if (options.warnings === false) {
 					spinner.fail();
-				}
-				else {
+				} else {
 					spinner.warn();
 				}
 				console.log(stderr);
@@ -129,5 +129,5 @@ function getArrayDifference(minuend, substrahend) {
 }
 
 function processStage(stageScript, cwd) {
-	return execa('/bin/sh', ['-c', stageScript], { cwd });
+	return execa('/bin/sh', ['-c', stageScript], {cwd});
 }
