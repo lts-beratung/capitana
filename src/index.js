@@ -3,6 +3,9 @@ const execa = require('execa');
 const ora = require('ora');
 const chalk = require('chalk');
 
+const allowedGlobalVariables = [
+	'except', 'all', 'verbose', 'break', 'interactive', 'warnings'];
+
 module.exports = async (stage, input, options = {}, config) => {
 	const configMicroservices = Object.keys(config.microservices);
 	let microservices;
@@ -40,16 +43,19 @@ module.exports = async (stage, input, options = {}, config) => {
 		if (cwd) {
 			cwd = interpolateVariables(cwd, microservice, options);
 		}
-		
+
 		try {
 			/* eslint-disable no-await-in-loop */
 			const { stdout, stderr } = await processStage(stageScript, cwd);
 			if (stderr) {
-				spinner.fail();
-				if (options.verbose === true) {
-					console.log(stderr);
+				if (options.warnings === false) {
+					spinner.fail();
 				}
-				if (options.break === true) {
+				else {
+					spinner.warn();
+				}
+				console.log(stderr);
+				if (options.warnings === false && options.break === true) {
 					break;
 				}
 			} else {
@@ -60,9 +66,7 @@ module.exports = async (stage, input, options = {}, config) => {
 			}
 		} catch (error) {
 			spinner.fail();
-			if (options.verbose === true) {
-				console.log(error);
-			}
+			console.log(error);
 			if (options.break === true) {
 				break;
 			}
@@ -94,7 +98,7 @@ function assertMicroservicesAreValid(microservices, configMicroservices) {
 function assertVariablesAreValid(config, options) {
 	const confVariables = Object.keys(config.variables);
 	const currentVariables = Object.keys(options);
-	const allVariables = confVariables.concat(['except', 'all', 'verbose', 'break', 'interactive']);
+	const allVariables = confVariables.concat(allowedGlobalVariables);
 	if (!isSubset(currentVariables, allVariables)) {
 		throw new Error(`Variables "${currentVariables}" don't match with the ones specified in the config file:
   "${allVariables}".`);
