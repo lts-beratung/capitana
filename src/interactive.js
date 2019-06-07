@@ -41,7 +41,7 @@ module.exports = async config => {
 		if (vari) {
 			const values = config.variables[vari];
 			const valuesObj = values.map(i => ({title: i, value: i}));
-			/* eslint-disable no-await-in-loop */
+			/* eslint-disable-next-line no-await-in-loop */
 			const {selectedVariable} = await prompts(
 				[
 					{
@@ -55,6 +55,7 @@ module.exports = async config => {
 			allVariables[vari] = selectedVariable;
 		}
 	}
+
 	return {stages: selectedStages, input: selectedMicroservices, options: allVariables};
 };
 
@@ -66,6 +67,7 @@ function getNeededVariables(selectedStages, config) {
 			neededVars = neededVars.concat(newVars);
 		}
 	}
+
 	return neededVars;
 }
 

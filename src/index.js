@@ -46,7 +46,7 @@ module.exports = async (stage, input, options = {}, config) => {
 		}
 
 		try {
-			/* eslint-disable no-await-in-loop */
+			/* eslint-disable-next-line no-await-in-loop */
 			const {stdout, stderr} = await processStage(stageScript, cwd);
 			if (stderr) {
 				if (options.warnings === false) {
@@ -54,6 +54,7 @@ module.exports = async (stage, input, options = {}, config) => {
 				} else {
 					spinner.warn();
 				}
+
 				console.log(stderr);
 				if (options.warnings === false && options.break === true) {
 					break;
@@ -72,6 +73,7 @@ module.exports = async (stage, input, options = {}, config) => {
 			}
 		}
 	}
+
 	console.log('');
 };
 
@@ -103,6 +105,7 @@ function assertVariablesAreValid(config, options) {
 		throw new Error(`Variables "${currentVariables}" don't match with the ones specified in the config file:
   "${allVariables}".`);
 	}
+
 	for (const vari of currentVariables) {
 		const allowedValues = config.variables[vari];
 		if (allowedValues && !allowedValues.includes(`${options[vari]}`)) {
@@ -117,6 +120,7 @@ function interpolateVariables(string, microservice, options) {
 	for (const key of Object.keys(options)) {
 		string = string.replace('$' + key, options[key]);
 	}
+
 	return string;
 }
 

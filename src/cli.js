@@ -27,8 +27,8 @@ const cli = meow(`
 let config;
 try {
 	config = yaml.safeLoad(fs.readFileSync('.capitanarc', 'utf8'));
-} catch (e) {
-	console.error(e);
+} catch (error) {
+	console.error(error);
 	console.log('No .capitanarc file found. Exiting...');
 	process.exit(1);
 }
@@ -51,10 +51,10 @@ try {
 
 	for (const stage of stages) {
 		try {
-			/* eslint-disable no-await-in-loop */
+			/* eslint-disable-next-line no-await-in-loop */
 			await capitana(stage, input, options, config);
-		} catch (e) {
-			console.error(e);
+		} catch (error) {
+			console.error(error);
 			break;
 		}
 	}

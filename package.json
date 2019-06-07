@@ -10,6 +10,9 @@
 		"url": "https://www.lts-beratung.de/en.html"
 	},
 	"bin": "src/cli.js",
+	"scripts": {
+		"test": "ava --verbose && xo"
+	},
 	"engines": {
 		"node": ">=6"
 	},
@@ -31,6 +34,7 @@
 		"update-notifier": "^3.0.0"
 	},
 	"devDependencies": {
-		"xo": "^0.21.1"
+		"ava": "^2.0.0",
+		"xo": "^0.24.0"
 	}
 }
