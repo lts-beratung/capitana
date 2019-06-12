@@ -66,7 +66,9 @@ module.exports = async (stage, input, options = {}, config) => {
 			}
 		} catch (error) {
 			spinner.fail();
-			console.error(error);
+
+			logError(error, options);
+
 			if (options.break === true) {
 				throw new Error('Aborting execution: --break set to true');
 			}
@@ -75,6 +77,19 @@ module.exports = async (stage, input, options = {}, config) => {
 
 	console.log('');
 };
+
+function logError(error, options) {
+	const { stdout, stderr } = error;
+	if (stdout && options.verbose === true) {
+		console.log(stdout);
+	}
+	if (stderr) {
+		console.error(stderr);
+	}
+	if (!stderr && !stdout && error) {
+		console.error(error);
+	}
+}
 
 function setSpinnerStatus(stderr, options, spinner) {
 	if (stderr) {
