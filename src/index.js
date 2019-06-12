@@ -79,13 +79,15 @@ module.exports = async (stage, input, options = {}, config) => {
 };
 
 function logError(error, options) {
-	const { stdout, stderr } = error;
+	const {stdout, stderr} = error;
 	if (stdout && options.verbose === true) {
 		console.log(stdout);
 	}
+
 	if (stderr) {
 		console.error(stderr);
 	}
+
 	if (!stderr && !stdout && error) {
 		console.error(error);
 	}
