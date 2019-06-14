@@ -33,6 +33,32 @@ try {
 	process.exit(1);
 }
 
+if (cli.flags.list) {
+	const listFlag = cli.flags.list;
+	switch (listFlag) {
+		case 'variables':
+			logArray(Object.keys(config.variables));
+			break;
+		case 'microservices':
+			logArray(Object.keys(config.microservices));
+			break;
+		case 'stages':
+			logArray(Object.keys(config.stages));
+			break;
+		default:
+			throw new Error(`Value "${listFlag}" for flag "list" not valid. Allowed ones are:
+				"${['variables', 'microservices', 'stages']}".`);
+	}
+
+	process.exit(0);
+}
+
+function logArray(array) {
+	for (const element of array) {
+		console.log(element);
+	}
+}
+
 (async () => {
 	let {input} = cli;
 	let options = cli.flags;
