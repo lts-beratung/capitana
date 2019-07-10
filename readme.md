@@ -1,7 +1,5 @@
 # capitana [![install size](https://flat.badgen.net/packagephobia/install/capitana)](https://packagephobia.now.sh/result?p=capitana) [![XO code style](https://flat.badgen.net/xo/status/capitana)](https://github.com/xojs/xo)
 
-![](example.svg)
-
 Microservice architecture has its perks, and orchestration systems sure do help to alleviate its pitfalls. Sooner or later, though, developers end up with a bunch of scripts to manage all the steps required to deploy your architecture.
 
 With `capitana`, you'll be able to control all the things your orchestration system can't quite reach.
