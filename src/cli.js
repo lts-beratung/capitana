@@ -71,6 +71,8 @@ function logArray(array) {
 			input
 		} = res);
 		options = {...options, ...res.options};
+	} else if (cli.flags.full) {
+		stages = Object.keys(config.stages);
 	} else {
 		stages = [input.shift()];
 	}

@@ -4,7 +4,7 @@ const ora = require('ora');
 const chalk = require('chalk');
 
 const allowedGlobalVariables = [
-	'except', 'all', 'verbose', 'break', 'interactive', 'warnings', 'list'
+	'full', 'except', 'all', 'verbose', 'break', 'interactive', 'warnings', 'list'
 ];
 
 module.exports = async (stage, input, options = {}, config) => {
