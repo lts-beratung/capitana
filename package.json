@@ -1,6 +1,6 @@
 {
 	"name": "capitana",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"description": "A minimal, highly customisable microservice deploy helper.",
 	"license": "MIT",
 	"repository": "lts-beratung/capitana",
