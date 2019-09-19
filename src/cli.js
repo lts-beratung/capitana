@@ -15,13 +15,20 @@ const cli = meow(`
 		capitana [stage] [microservices] [options]
 
 	Options
-		--break Stop execution on execution failure.
-		--all  Execute program on all microservices.
+		--help  Show this message and exit.
+		--full  Executes all stages on the selected microservices.
 		--except  Exclude [microservices] microservices from execution.
-
+		--all  Execute program on all microservices.
+		--verbose  Execute program on all microservices.
+		--break Stop execution on execution failure.
+		--interactive Executes capitana interactively.
+		--no-warnings Treats all stderr as an error and not a warning.
+		--list [variables|microservices|stages] List configured variables.
 	Examples
 	$ capitana deploy --all
 		executes stage 'deploy' on all microservices
+	$ capitana --full database
+		executes all stages on microservice 'database'
 `);
 
 let config;

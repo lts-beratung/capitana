@@ -6,7 +6,7 @@ With `capitana`, you'll be able to control all the things your orchestration sys
 
 Forget about
 
-```
+```bash
 ./build-database-prod.sh
 ./build-api-prod.sh
 ./build-database-prod.sh
@@ -18,32 +18,39 @@ and start `capitana build --environment prod --all`!
 
 ### Using [npm](https://github.com/npm/cli)
 
-```
+```bash
 $ npm install --global capitana
 ```
 
 ### Using [npx](https://github.com/zkat/npx)
 
-```
+```bash
 $ npx capitana [stage] [microservices] [options]
 ```
 
 ## Usage
 
-```
+```bash
 $ capitana --help
 
-  Usage
-    capitana [stage] [microservices] [options]
+    Usage
+      capitana [stage] [microservices] [options]
 
-  Options
-    --break Stop execution on execution failure.
-    --all  Execute program on all microservices.
-    --except  Exclude [microservices] microservices from execution.
-
-  Examples
+    Options
+      --help  Show this message and exit.
+      --full  Executes all stages on the selected microservices.
+      --except  Exclude [microservices] microservices from execution.
+      --all  Execute program on all microservices.
+      --verbose  Execute program on all microservices.
+      --break Stop execution on execution failure.
+      --interactive Executes capitana interactively.
+      --no-warnings Treats all stderr as an error and not a warning.
+      --list [variables|microservices|stages] List configured variables.
+    Examples
     $ capitana deploy --all
       executes stage 'deploy' on all microservices
+    $ capitana --full database
+      executes all stages on microservice 'database'
 ```
 
 ## Configuration file
@@ -52,7 +59,7 @@ Capitana is heavily dependant on its own `.capitanarc` configuration file. For t
 
 Example configuration file:
 
-```
+```yaml
 microservices:
   database: ~
   load-balancer:
@@ -81,6 +88,8 @@ variables:
   tag:
     - latest
     - "1.0"
+  defaults:
+    tag: "latest"
 ```
 
 ## License
