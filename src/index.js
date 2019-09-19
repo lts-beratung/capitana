@@ -145,11 +145,11 @@ function assertVariablesAreValid(config, options) {
 }
 
 function setDefaults(config, options) {
-	const defaults = Object.keys(config.variables.defaults);
-
-	if (!defaults) {
+	if (!config.variables.defaults) {
 		return;
 	}
+
+	const defaults = Object.keys(config.variables.defaults);
 
 	for (const vari of defaults) {
 		if (options[vari]) {
