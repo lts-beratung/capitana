@@ -15,6 +15,7 @@ module.exports = async (stage, input, options = {}, config) => {
 
 	assertStageIsValid(config, stage);
 	assertMicroservicesAreValid(microservices, configMicroservices);
+	setDefaults(config, options);
 	assertVariablesAreValid(config, options);
 
 	if (options.except === true) {
@@ -140,6 +141,22 @@ function assertVariablesAreValid(config, options) {
 			throw new Error(`Value "${options[vari]}" of variable "${vari}" not allowed. Allowed:
   "${allowedValues}".`);
 		}
+	}
+}
+
+function setDefaults(config, options) {
+	const defaults = Object.keys(config.variables.defaults);
+
+	if (!defaults) {
+		return;
+	}
+
+	for (const vari of defaults) {
+		if (options[vari]) {
+			continue;
+		}
+
+		options[vari] = config.variables.defaults[vari];
 	}
 }
 
