@@ -60,6 +60,26 @@ if (cli.flags.list) {
 	process.exit(0);
 }
 
+if (cli.flags.listAllowed) {
+	const microserviceName = cli.flags.listAllowed;
+	const stages = Object.keys(config.stages);
+	if (!Object.keys(config.microservices).includes(microserviceName)) {
+		console.error(`Microservice "${microserviceName}" not found.`);
+		console.error('Available microservices:');
+		logArray(Object.keys(config.microservices));
+	}
+
+	const microservice = config.microservices[microserviceName];
+	for (let i = 0; i < stages.length; i++) {
+		const stage = stages[i];
+		if (!microservice || !microservice.allowedStages || microservice.allowedStages.includes(stage)) {
+			console.log(stage);
+		}
+	}
+
+	process.exit(0);
+}
+
 function logArray(array) {
 	for (const element of array) {
 		console.log(element);

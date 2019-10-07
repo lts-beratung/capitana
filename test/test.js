@@ -15,12 +15,24 @@ test('stderr logging after stdout', async t => {
 		['push', '--all'], t);
 });
 
+test('listAllowed flag generic test', async t => {
+	await genericTest(
+		'test/list-allowed',
+		['--listAllowed', 'gateway'], t);
+});
+
+test('listAllowed flag with allowedStages restriction', async t => {
+	await genericTest(
+		'test/list-allowed-restricted',
+		['--listAllowed', 'transceiver'], t);
+});
+
 async function genericTest(path, args, t, write) {
 	let stderr;
 	let stdout;
 	try {
 		({stdout, stderr} =
-			await execa('npx', ['--quiet', 'capitana'].concat(args), {cwd: path}));
+			await execa('node', [`${__dirname}/../src/cli.js`].concat(args), {cwd: path}));
 	} catch (error) {
 		({stdout, stderr} = error);
 	}
