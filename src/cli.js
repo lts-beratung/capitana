@@ -24,6 +24,7 @@ const cli = meow(`
 		--interactive Executes capitana interactively.
 		--no-warnings Treats all stderr as an error and not a warning.
 		--list [variables|microservices|stages] List configured variables.
+		--listAllowed microservice Lists the stages the microservice is allowed to run through.
 	Examples
 	$ capitana deploy --all
 		executes stage 'deploy' on all microservices
