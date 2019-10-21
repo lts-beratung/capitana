@@ -24,6 +24,7 @@ const cli = meow(`
 		--interactive Executes capitana interactively.
 		--list [variables|microservices|stages] List configured variables.
 		--listAllowed microservice Lists the stages the microservice is allowed to run through.
+		--no-spinner Disables spinner. Useful for non-unicode terminals.
 		--no-warnings Treats all stderr as an error and not a warning.
 		--verbose  Execute program on all microservices.
 	Examples
