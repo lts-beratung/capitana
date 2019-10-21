@@ -27,6 +27,12 @@ test('listAllowed flag with allowedStages restriction', async t => {
 		['--listAllowed', 'transceiver'], t);
 });
 
+test('two config files', async t => {
+	await genericTest(
+		'test/two-config-files',
+		['--config', 'no-deploy.capitanarc', '--full', '--all'], t);
+});
+
 async function genericTest(path, args, t, write) {
 	let stderr;
 	let stdout;

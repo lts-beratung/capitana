@@ -15,16 +15,17 @@ const cli = meow(`
 		capitana [stage] [microservices] [options]
 
 	Options
-		--help  Show this message and exit.
-		--full  Executes all stages on the selected microservices.
-		--except  Exclude [microservices] microservices from execution.
 		--all  Execute program on all microservices.
-		--verbose  Execute program on all microservices.
 		--break Stop execution on execution failure.
+		--config filePath Specifies a different config file to use
+		--except  Exclude [microservices] microservices from execution.
+		--full  Executes all stages on the selected microservices.
+		--help  Show this message and exit.
 		--interactive Executes capitana interactively.
-		--no-warnings Treats all stderr as an error and not a warning.
 		--list [variables|microservices|stages] List configured variables.
 		--listAllowed microservice Lists the stages the microservice is allowed to run through.
+		--no-warnings Treats all stderr as an error and not a warning.
+		--verbose  Execute program on all microservices.
 	Examples
 	$ capitana deploy --all
 		executes stage 'deploy' on all microservices
@@ -34,10 +35,15 @@ const cli = meow(`
 
 let config;
 try {
-	config = yaml.safeLoad(fs.readFileSync('.capitanarc', 'utf8'));
+	let configFileName = '.capitanarc';
+	if (cli.flags.config) {
+		configFileName = cli.flags.config;
+	}
+
+	config = yaml.safeLoad(fs.readFileSync(configFileName, 'utf8'));
 } catch (error) {
 	console.error(error);
-	console.log('No .capitanarc file found. Exiting...');
+	console.log('No valid configuration file found. Exiting...');
 	process.exit(1);
 }
 

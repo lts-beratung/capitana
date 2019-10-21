@@ -4,7 +4,15 @@ const ora = require('ora');
 const chalk = require('chalk');
 
 const allowedGlobalVariables = [
-	'full', 'except', 'all', 'verbose', 'break', 'interactive', 'warnings', 'list'
+	'all',
+	'break',
+	'config',
+	'except',
+	'full',
+	'interactive',
+	'list',
+	'verbose',
+	'warnings'
 ];
 
 module.exports = async (stage, input, options = {}, config) => {
@@ -127,8 +135,9 @@ function assertMicroservicesAreValid(microservices, configMicroservices) {
 }
 
 function assertVariablesAreValid(config, options) {
-	const confVariables = Object.keys(config.variables);
-	const currentVariables = Object.keys(options);
+	const confVariables = config.variables ? Object.keys(config.variables) : [];
+	const currentVariables = options ? Object.keys(options) : [];
+
 	const allVariables = confVariables.concat(allowedGlobalVariables);
 	if (!isSubset(currentVariables, allVariables)) {
 		throw new Error(`Variables "${currentVariables}" don't match with the ones specified in the config file:
@@ -136,7 +145,7 @@ function assertVariablesAreValid(config, options) {
 	}
 
 	for (const vari of currentVariables) {
-		const allowedValues = config.variables[vari];
+		const allowedValues = config.variables ? config.variables[vari] : undefined;
 		if (allowedValues && !allowedValues.includes(`${options[vari]}`)) {
 			throw new Error(`Value "${options[vari]}" of variable "${vari}" not allowed. Allowed:
   "${allowedValues}".`);
@@ -145,7 +154,7 @@ function assertVariablesAreValid(config, options) {
 }
 
 function setDefaults(config, options) {
-	if (!config.variables.defaults) {
+	if (!config.variables || !config.variables.defaults) {
 		return;
 	}
 

@@ -1,0 +1,4 @@
+{
+	"stdout": "Beginning to work on stage build\n\nBeginning to work on stage push\n",
+	"stderr": "- Working on stage build on microservice gateway...\n✔ Working on stage build on microservice gateway...\n- Working on stage push on microservice gateway...\n✔ Working on stage push on microservice gateway..."
+}

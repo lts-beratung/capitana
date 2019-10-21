@@ -1,0 +1,7 @@
+microservices:
+  gateway: ~
+stages:
+  build:
+    run: sleep 1
+  push:
+    run: sleep 1

@@ -1,4 +1,4 @@
 {
 	"stdout": "Beginning to work on stage push\n",
-	"stderr": "- Working on stage push on microservice server...\n✖ Working on stage push on microservice server...\nError: Found an error while executing the script\n    at module.exports (/Users/vike/LTS/capitana/src/index.js:53:12)\n    at process._tickCallback (internal/process/next_tick.js:68:7)\nError: Aborting execution: --break set to true\n    at module.exports (/Users/vike/LTS/capitana/src/index.js:74:11)\n    at process._tickCallback (internal/process/next_tick.js:68:7)\n"
+	"stderr": "- Working on stage push on microservice server...\n✖ Working on stage push on microservice server...\nError: Found an error while executing the script\n    at module.exports (/Users/vike/LTS/capitana/src/index.js:61:12)\n    at process._tickCallback (internal/process/next_tick.js:68:7)\nError: Aborting execution: --break set to true\n    at module.exports (/Users/vike/LTS/capitana/src/index.js:82:11)\n    at process._tickCallback (internal/process/next_tick.js:68:7)\n"
 }
