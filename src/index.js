@@ -11,6 +11,7 @@ const allowedGlobalVariables = [
 	'full',
 	'interactive',
 	'list',
+	'spinner',
 	'verbose',
 	'warnings'
 ];
@@ -38,12 +39,28 @@ module.exports = async (stage, input, options = {}, config) => {
   "${variables}".`);
 	}
 
-	console.log(chalk`Beginning to work on stage {green.bold ${stage}}`);
+	if (options.spinner === false) {
+		console.log(`Beginning to work on stage ${stage}`);
+	} else {
+		console.log(chalk`Beginning to work on stage {green.bold ${stage}}`);
+	}
+
 	const originalStageScript = config.stages[stage].run;
 	for (const microservice of microservices) {
-		let spinner = ora(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}...`).start();
+		let spinner;
+		if (options.spinner === false) {
+			console.log(`Working on stage ${stage} on microservice ${microservice}...`);
+		} else {
+			spinner = ora(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}...`).start();
+		}
+
 		if (!isStageAllowed(config, microservice, stage)) {
-			spinner.warn(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}... {yellow.bold Skipped}: Stage not allowed`);
+			if (options.spinner === false) {
+				console.warn('  Skipped: Stage not allowed');
+			} else {
+				spinner.warn(chalk`Working on stage {green.bold ${stage}} on microservice {red.bold ${microservice}}... {yellow.bold Skipped}: Stage not allowed`);
+			}
+
 			continue;
 		}
 
@@ -62,7 +79,9 @@ module.exports = async (stage, input, options = {}, config) => {
 				}
 			}
 
-			spinner = setSpinnerStatus(stderr, options, spinner);
+			if (options.spinner !== false) {
+				spinner = setSpinnerStatus(stderr, options, spinner);
+			}
 
 			if (stdout) {
 				if (options.verbose === true) {
@@ -74,7 +93,9 @@ module.exports = async (stage, input, options = {}, config) => {
 				console.error(stderr);
 			}
 		} catch (error) {
-			spinner.fail();
+			if (options.spinner !== false) {
+				spinner.fail();
+			}
 
 			logError(error, options);
 

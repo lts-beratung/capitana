@@ -33,6 +33,12 @@ test('two config files', async t => {
 		['--config', 'no-deploy.capitanarc', '--full', '--all'], t);
 });
 
+test('no spinner', async t => {
+	await genericTest(
+		'test/no-spinner',
+		['--full', '--all', '--no-spinner'], t);
+});
+
 async function genericTest(path, args, t, write) {
 	let stderr;
 	let stdout;

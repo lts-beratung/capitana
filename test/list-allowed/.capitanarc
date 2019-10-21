@@ -5,8 +5,8 @@ variables:
     - prod
 microservices:
   server:
-  allowedStages:
-    - push
+    allowedStages:
+      - push
   transceiver:
     allowedStages:
       - build
