@@ -1,6 +1,6 @@
 ![Capitana: a build tool for microservices](cover.png)
 
-[![install size](https://flat.badgen.net/packagephobia/install/capitana)](https://packagephobia.now.sh/result?p=capitana) [![XO code style](https://flat.badgen.net/xo/status/capitana)](https://github.com/xojs/xo)
+[![install size](https://flat.badgen.net/packagephobia/install/capitana)](https://packagephobia.now.sh/result?p=capitana) [![npm version](https://flat.badgen.net/npm/v/capitana)](https://www.npmjs.com/package/capitana) [![XO code style](https://flat.badgen.net/xo/status/capitana)](https://github.com/xojs/xo)
 
 Microservice architecture has its perks, and orchestration systems sure do help to alleviate its pitfalls. Sooner or later, though, developers end up with a bunch of scripts to manage all the steps required to deploy your architecture.
 
@@ -39,16 +39,17 @@ $ capitana --help
       capitana [stage] [microservices] [options]
 
     Options
-      --help  Show this message and exit.
-      --full  Executes all stages on the selected microservices.
-      --except  Exclude [microservices] microservices from execution.
       --all  Execute program on all microservices.
-      --verbose  Execute program on all microservices.
       --break Stop execution on execution failure.
+      --config filePath Specifies a different config file to use
+      --except  Exclude [microservices] microservices from execution.
+      --full  Executes all stages on the selected microservices.
+      --help  Show this message and exit.
       --interactive Executes capitana interactively.
-      --no-warnings Treats all stderr as an error and not a warning.
       --list [variables|microservices|stages] List configured variables.
       --listAllowed microservice Lists the stages the microservice is allowed to run through.
+      --no-warnings Treats all stderr as an error and not a warning.
+      --verbose  Execute program on all microservices.
     Examples
     $ capitana deploy --all
       executes stage 'deploy' on all microservices
