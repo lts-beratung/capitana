@@ -75,6 +75,7 @@ if (cli.flags.listAllowed) {
 		console.error(`Microservice "${microserviceName}" not found.`);
 		console.error('Available microservices:');
 		logArray(Object.keys(config.microservices));
+		process.exit(1);
 	}
 
 	const microservice = config.microservices[microserviceName];
