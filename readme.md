@@ -42,12 +42,13 @@ $ capitana --help
       --all  Execute program on all microservices.
       --break Stop execution on execution failure.
       --config filePath Specifies a different config file to use
-      --except  Exclude [microservices] microservices from execution.
+      --except microservices Exclude microservices from execution.
       --full  Executes all stages on the selected microservices.
       --help  Show this message and exit.
       --interactive Executes capitana interactively.
-      --list [variables|microservices|stages] List configured variables.
-      --listAllowed microservice Lists the stages the microservice is allowed to run through.
+      --list [ "variables" | "microservices" | "stages"] List configured variables.
+      --listAllowed [ microservice | stage ] Lists the stages a microservice is allowed
+          to run through or the microservices allowed to run through a stage.
       --no-spinner Disables spinner. Useful for non-unicode terminals.
       --no-warnings Treats all stderr as an error and not a warning.
       --verbose  Execute program on all microservices.
